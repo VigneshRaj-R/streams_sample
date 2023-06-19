@@ -59,7 +59,6 @@ class _MyAppState extends State<MyApp> {
               ),
               ElevatedButton(
                   onPressed: () {
-                    // print(textEditingController.text);
                     streamController.add(textEditingController.text);
                   },
                   child: const Text(
