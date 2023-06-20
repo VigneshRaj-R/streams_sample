@@ -15,7 +15,14 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   StreamController<String> streamController = StreamController<String>();
+  late Stream<String> dataStream;
   TextEditingController textEditingController = TextEditingController();
+  @override
+  void initState() {
+    dataStream = streamController.stream.asBroadcastStream();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -26,7 +33,28 @@ class _MyAppState extends State<MyApp> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               StreamBuilder<String>(
-                  stream: streamController.stream,
+                  stream: dataStream,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return Text(
+                        snapshot.data.toString(),
+                        style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold),
+                      );
+                    } else {
+                      return const Text(
+                        "No Data",
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold),
+                      );
+                    }
+                  }),
+              StreamBuilder<String>(
+                  stream: dataStream,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       return Text(
